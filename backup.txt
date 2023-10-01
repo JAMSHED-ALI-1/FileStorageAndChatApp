@@ -1,0 +1,85 @@
+import React, {useState} from 'react';
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Text,
+} from 'react-native';
+import CountryPicker from 'react-native-country-picker-modal';
+import Entypo from 'react-native-vector-icons/Entypo';
+
+const Phone = () => {
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('IN');
+  const [country, setCountry] = useState(null);
+  const [isPickerVisible, setIsPickerVisible] = useState(false); 
+
+  const handlePhoneNumberChange = inputText => {
+    // Implement formatting logic here if needed (e.g., adding spaces, parentheses)
+    setPhoneNumber(inputText);
+
+  };
+
+  const handleCountryChange = selectedCountry => {
+    setCountry(selectedCountry);
+    setCountryCode(selectedCountry.cca2);
+    setIsPickerVisible(false);
+  };
+  const togglePicker = () => {
+    setIsPickerVisible(!isPickerVisible);
+  };
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.inputContainer}>
+        <CountryPicker
+          onSelect={handleCountryChange}
+          countryCode={countryCode}
+          visible={isPickerVisible}
+          
+        />
+        <TouchableOpacity onPress={togglePicker}>
+          <Entypo
+            name="chevron-small-down"
+            size={20}
+            color="black"
+            style={styles.dropdownIcon}
+          />
+        </TouchableOpacity>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter your phone number"
+          value={phoneNumber}
+          onChangeText={handlePhoneNumberChange}
+          keyboardType="phone-pad"
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    marginTop: 7,
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.25)',
+    borderRadius: 50,
+    paddingHorizontal: 10,
+  },
+  input: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 16,
+  },
+  dropdownIcon: {
+    marginLeft: 10,
+  },
+});
+
+export default Phone;
